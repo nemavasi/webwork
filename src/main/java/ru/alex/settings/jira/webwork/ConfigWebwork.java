@@ -106,7 +106,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         return null;
     }
 
-
+    //
     private List<String> getOfmFieldSettings(String fieldId) {
         List<String> local_OFMlist = new ArrayList<String>();
 
