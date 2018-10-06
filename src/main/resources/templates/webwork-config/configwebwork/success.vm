@@ -1,0 +1,328 @@
+<html>
+    <head>
+        <meta name="decorator" content="atl.admin"/>
+        <meta name="admin.active.section" content="admin_plugins_menu/webwork-config-section"/>
+        $webResourceManager.requireResource("com.atlassian.auiplugin:aui-buttons")
+        $webResourceManager.requireResourcesForContext("com.atlassian.auiplugin:message")
+        ##$webResourceManager.requireResource("ru.alex.settings.webwork:webwork-resources")
+        ##$webResourceManager.requireResourcesForContext("webwork")
+        ##$webResourceManager.requireResourcesForContext("ru.alex.settings.webwork:webwork-resources")
+        ##$webResourceManager.requireResources("ru.alex.settings.webwork:webwork-resources")
+        $webResourceManager.requireResourcesForContext("webwork")
+
+    </head>
+    <body class="aui">
+
+
+        <div id="aui-message-bar"></div>
+        <div id="config-json" style="display: none">$configJson</div>
+
+
+        <!-- заголовок -->
+        <div class="aui-tabs horizontal-tabs aui-tabs-disabled">
+            <div class="tabs-pane active-pane" id="tabs-save-buttons-title">
+                <div>
+                    <h1>Настройка состава исполнителей задач ОФМ</h1>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- кнопки сохранения наверху -->
+        <div class="aui-tabs horizontal-tabs aui-tabs-disabled">
+            <div class="tabs-pane active-pane" id="tabs-save-buttons-top">
+                <div class="buttons-container">
+                    <div class="buttons">
+                        <button name="btnsubm" style="margin-right: 20px" class="aui-button aui-button-primary">Сохранить</button>
+##                        <button class="aui-button">Обновить</button>
+                        <span>идентификатор поля в ОФМ</span>
+                        <input style="margin-right: 20px; background: #fff; color: #333; padding: 4px 5px; width: 200px; border: 1px solid #ccc; border-radius: 3.01px; box-sizing: border-box;"
+                               type="text"
+                               id="vofm"
+                               placeholder="идентификатор поля в ОФМ"
+                               value="$idvOFM"/>
+
+                        <span>идентификатор поля из ОФМ</span>
+                        <input style="margin-left: 5px; background: #fff; color: #333; padding: 4px 5px; width: 200px; border: 1px solid #ccc; border-radius: 3.01px; box-sizing: border-box;"
+                               type="text"
+                               id="izofm"
+                               placeholder="идентификатор поля из ОФМ"
+                               value="$idizOFM"/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="aui-tabs horizontal-tabs">
+            <ul class="tabs-menu">
+                <li class="menu-item active-tab">
+                    <a href="#vofm_tab">Передача документов В ОФМ</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#izofm_tab">Запрос документов ОФМ в ВСП</a>
+                </li>
+            </ul>
+
+
+
+            <!-- --------------------------------------- -->
+            <!-- первая страница -->
+            <!-- --------------------------------------- -->
+
+            <div class="tabs-pane active-pane" id="vofm_tab">
+
+                <!-- --------------------------------------- -->
+                <!-- начало блока для сохранения одной опции -->
+                <!-- --------------------------------------- -->
+
+                #set ($cnt = 0)
+                #foreach($ofm in $vOFMlist)
+                    #set ($cnt = $cnt + 1)
+
+                    <!-- заголовок 1 -->
+                    <div style="margin-top: 20px" id="vofm_title_$cnt">
+                        <span style="font-size: 20px">$ofm</span>
+                    </div>
+
+                    <!-- таблица 1 -->
+                    <form class="aui">
+                        <table class="aui tableparams" style="width: 50%" id="vofm_table_$cnt">
+                            <tbody>
+##                            <tr>
+##                                <td>
+##                                    <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user1"/>
+##                                </td>
+##                                <td>
+##                                    <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+##                                </td>
+##                            </tr>
+##                            <tr>
+##                                <td>
+##                                    <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user2"/>
+##                                </td>
+##                                <td>
+##                                    <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+##                                </td>
+##                            </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 20px" class="buttons-container">
+                            <input class="button submit" type="button" value="Добавить строку" id="vofm_action_add_$cnt" name="btnaddrow"/>
+                        </div>
+                    </form>
+                #end
+
+
+
+                <!-- заголовок 1 -->
+                <div style="margin-top: 20px" id="vofm_title_1">
+                    <span style="font-size: 20px">Запрос документов</span>
+                </div>
+
+
+                <!-- таблица 1 -->
+                <form class="aui">
+
+                    <table class="aui tableparams" style="width: 50%" id="vofm_table_1">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user1"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user2"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 20px" class="buttons-container">
+                        <input class="button submit" type="button" value="Добавить строку" id="vofm_action_add_1" name="btnaddrow"/>
+                    </div>
+
+                </form>
+                <!-- --------------------------------------- -->
+                <!-- конец блока для сохранения одной опции -->
+                <!-- --------------------------------------- -->
+
+
+                <form class="aui">
+
+                    <!-- заголовок 2 -->
+                    <div style="margin-top: 20px" id="vofm_title_2">
+                        <span style="font-size: 20px">Запрос сведений о клиенте</span>
+                    </div>
+
+
+                    <!-- таблица 2 -->
+                    <table class="aui tableparams" style="width: 50%" id="vofm_table_2">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user11"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user22"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 20px" class="buttons-container">
+                        <input class="button submit" type="button" value="Добавить строку" id="vofm_action_add_2" name="btnaddrow"/>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+
+
+            <!-- --------------------------------------- -->
+            <!-- вторая страница -->
+            <!-- --------------------------------------- -->
+
+            <div class="tabs-pane" id="izofm_tab">
+
+
+
+
+
+
+
+                #set ($cnt = 0)
+                #foreach($ofm in $izOFMlist)
+                    #set ($cnt = $cnt + 1)
+
+                    <!-- заголовок 1 -->
+                    <div style="margin-top: 20px" id="izofm_title_$cnt">
+                        <span style="font-size: 20px">$ofm</span>
+                    </div>
+
+                    <!-- таблица 1 -->
+                    <form class="aui">
+                        <table class="aui tableparams" style="width: 50%" id="izofm_table_$cnt">
+                            <tbody>
+                            ##                            <tr>
+##                                <td>
+##                                    <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user1"/>
+##                                </td>
+##                                <td>
+##                                    <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+##                                </td>
+##                            </tr>
+##                            <tr>
+##                                <td>
+##                                    <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user2"/>
+##                                </td>
+##                                <td>
+##                                    <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+##                                </td>
+##                            </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 20px" class="buttons-container">
+                            <input class="button submit" type="button" value="Добавить строку" id="izofm_action_add_$cnt" name="btnaddrow"/>
+                        </div>
+                    </form>
+                #end
+
+
+
+
+
+
+
+
+
+
+
+                <!-- --------------------------------------- -->
+                <!-- начало блока для сохранения одной опции -->
+                <!-- --------------------------------------- -->
+
+                <!-- заголовок 3 -->
+                <div style="margin-top: 20px" id="izofm_title_1">
+                    <span style="font-size: 20px">Запрос документов</span>
+                </div>
+
+
+                <!-- таблица 3 -->
+                <form class="aui">
+
+                    <table class="aui tableparams" style="width: 50%" id="izofm_table_1">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user31"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value="user32"/>
+                            </td>
+                            <td>
+                                <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 20px" class="buttons-container">
+                        <input class="button submit" type="button" value="Добавить строку" id="izofm_action_add_1" name="btnaddrow"/>
+                    </div>
+
+                </form>
+                <!-- --------------------------------------- -->
+                <!-- конец блока для сохранения одной опции -->
+                <!-- --------------------------------------- -->
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+##        <!-- кнопки сохранения внизу -->
+##        <div class="aui-tabs horizontal-tabs aui-tabs-disabled">
+##            <div class="tabs-pane active-pane" id="tabs-save-buttons-bottom">
+##                <div class="buttons-container">
+##                    <div class="buttons">
+##                        <button name="btnsubm" class="aui-button aui-button-primary">Сохранить</button>
+##                        <button class="aui-button">Отмена</button>
+##                    </div>
+##                </div>
+##            </div>
+##        </div>
+
+    </body>
+</html>
+
+
+
