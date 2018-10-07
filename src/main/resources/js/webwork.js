@@ -347,8 +347,6 @@ function bindClickOnAddRowButton(procType, nomTable) {
             }
         });
 
-
-
         // все кнопки
         var objInputs = AJS.$("#" + procType + "_table_" + nomTable + " tr td input");
         // последняя наша
@@ -427,9 +425,10 @@ function getParamsFromTab(ztype) {
         oneParam.name = AJS.$("#" + ztype + "_title_" + n_str + " span").text();
         oneParam.users = [];
 
-        AJS.$("#" + ztype + "_table_" + n_str + " tr td input[name=useraccount]").each(function(index, value) {
-            if (AJS.$(value).val() !== "") {
-                oneParam.users.push(AJS.$(value).val());
+        // AJS.$("#" + ztype + "_table_" + n_str + " tr td input[name=useraccount]").each(function(index, value) {
+        AJS.$("#" + ztype + "_table_" + n_str + " tr td .user_select").each(function(index, value) {
+            if (AJS.$(value).select2("data") != null) {
+                oneParam.users.push(AJS.$(value).select2("data").text);
             }
         });
 

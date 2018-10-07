@@ -118,6 +118,7 @@
 
                                 <td>
                                     <input type="hidden" class="user_select" style="width: 200px;"></input>
+                                    <span style="display: none">{username:$user.getUsername(), userdisplayname:$user.getDisplayName()}</span>
                                 </td>
 
                                 <td>
