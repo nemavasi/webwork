@@ -318,10 +318,39 @@ function bindClickOnAddRowButton(procType, nomTable) {
         var table = AJS.$("#" + procType + "_table_" + nomTable);
         table.append(tableRow);
 
+        // инициализируем селект
+
         // тут устанавливаем событие на кнопку удаления в строке
+        // берем все из таблицы, последний добавленный наш
+        var objSelect = AJS.$("#" + procType + "_table_" + nomTable + " tr td .user_select");
+        var lastSelect = objSelect[objSelect.length - 1];
+        AJS.$(lastSelect).select2({
+            ajax: {
+                delay: 250,
+                url: function(searchdata) {
+                    return "/jira/rest/api/2/user/search?username=" + searchdata;
+                },
+                dataType: 'json',
+                results: function (data, page) {
+                    var retVal = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var jsonObj = {};
+                        jsonObj.id = data[i].displayName;
+                        jsonObj.text = data[i].name;
+                        retVal.push(jsonObj);
+                    }
+
+                    return {
+                        results: retVal
+                    };
+                }
+            }
+        });
+
+
 
         // все кнопки
-        var objInputs = AJS.$("#" + procType + "_table_" + nomTable + " tr td input[type='hidden']");
+        var objInputs = AJS.$("#" + procType + "_table_" + nomTable + " tr td input");
         // последняя наша
         var lastInput = objInputs[objInputs.length - 1];
         // устанавливаем событие
