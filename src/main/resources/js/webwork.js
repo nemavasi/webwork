@@ -297,11 +297,22 @@ function bindClickOnAddRowButton(procType, nomTable) {
 
     AJS.$("#" + procType + "_action_add_" + nomTable).click(function() {
         // содержимое строки
-        var tableRow = "<tr><td>"
-            + '<input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value=""/>'
-            + "</td><td>"
+        // var tableRow = "<tr><td>"
+        //     + '<input class="text medium-field" type="text" name="useraccount" placeholder="логин пользователя" value=""/>'
+        //     + "</td><td>"
+        //     + '<input name="btndelrow" class="button submit" type="button" value="Удалить"/>'
+        //     + '</td></tr>';
+
+
+        var tableRow = '<tr><td>'
+            + '<input class="text medium-field" type="hidden" name="useraccount" placeholder="логин пользователя" value=""/>'
+            + '</td><td>'
+            + '<input type="hidden" class="user_select" style="width: 200px;"></input>'
+            + '</td><td>'
             + '<input name="btndelrow" class="button submit" type="button" value="Удалить"/>'
             + '</td></tr>';
+
+
 
         // добавляем строку
         var table = AJS.$("#" + procType + "_table_" + nomTable);
@@ -310,7 +321,7 @@ function bindClickOnAddRowButton(procType, nomTable) {
         // тут устанавливаем событие на кнопку удаления в строке
 
         // все кнопки
-        var objInputs = AJS.$("#" + procType + "_table_" + nomTable + " tr td input");
+        var objInputs = AJS.$("#" + procType + "_table_" + nomTable + " tr td input[type='hidden']");
         // последняя наша
         var lastInput = objInputs[objInputs.length - 1];
         // устанавливаем событие
