@@ -1,9 +1,14 @@
 package ru.alex.settings.jira.webwork;
 
+import com.atlassian.jira.bc.group.search.GroupPickerSearchService;
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.user.util.UserManager;
 import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.customfields.option.Options;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.security.groups.GroupManager;
+import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.util.UserManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,7 +21,11 @@ import ru.alex.settings.api.PluginSettingService;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 //import javax.inject.Named;
+
+
+import com.atlassian.crowd.embedded.api.Group;
 
 //@Named
 public class ConfigWebwork extends JiraWebActionSupport
@@ -30,12 +39,14 @@ public class ConfigWebwork extends JiraWebActionSupport
     private String idvOFM;
     private String idizOFM;
 
-    // настройки полей - значения каждого поля
-    private List<String> vOFMlist;
-    private List<String> izOFMlist;
-
     // настройки полей - значения каждого поля и пользователи
     private List<TableParams> vOFMparams;
+    private List<TableParams> izOFMparams;
+
+    // настройки для получения пользователей
+    UserManager userManager = ComponentAccessor.getUserManager();
+    // тут параметры для таблицы руководителей групп
+    //private List<String> allGroups;
 
 
 
@@ -106,7 +117,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         return null;
     }
 
-    //
+
     private List<String> getOfmFieldSettings(String fieldId) {
         List<String> local_OFMlist = new ArrayList<String>();
 
@@ -127,21 +138,106 @@ public class ConfigWebwork extends JiraWebActionSupport
         return getCustomFieldIdFromJson("izofm");
     }
 
-    public List<String> getvOFMlist() {
-        String idvOFM = getCustomFieldIdFromJson("vofm");
-        return getOfmFieldSettings("customfield_" + idvOFM);
-        // return getOfmFieldSettings("customfield_10000");
-    }
-
-    public List<String> getIzOFMlist() {
-        String idizOFM = getCustomFieldIdFromJson("izofm");
-        return getOfmFieldSettings("customfield_" + idizOFM);
-        // return getOfmFieldSettings("customfield_10001");
-    }
-
-    public List<TableParams> getvOFMparams() {
+    // получаем параметры из json для процессов офм
+    private List<TableParams> paramsForOFMprocType(String procType) {
         // идея такая - таблицы формируем из возможных значений полей, а пользоваетелей для таблицы ищем в настройках полей которые хранятся в json
 
-        return null;
+        // возможные значения полей
+        List<String> fieldValues = null;
+
+        // параметры таблиц
+        List<TableParams> listTableParams = new ArrayList<TableParams>();
+
+        // тип запроса ОФМ
+        String typeProcOFM = "";
+        // идентификатор поля
+        String cfId = "";
+
+        String cfg = pluginSettingService.getConfigJson();
+
+        JsonParser parser = new JsonParser();
+        JsonArray mainArray = parser.parse(cfg).getAsJsonArray();
+        for (JsonElement fieldParam : mainArray) {
+            JsonObject typeObject = fieldParam.getAsJsonObject();
+
+            //cfId = typeObject.get("id").getAsString();
+            cfId = getCustomFieldIdFromJson(procType);
+            fieldValues = getOfmFieldSettings("customfield_" + cfId);
+
+
+            for (String fieldVal : fieldValues) {
+
+
+                if (procType.equals(typeObject.get("ztype").getAsString())) {
+
+                    List<ApplicationUser> users = new ArrayList<ApplicationUser>();
+
+                    JsonArray valueParams = typeObject.get("params").getAsJsonArray();
+
+                    for (JsonElement oneValueParamsArr : valueParams) {
+                        JsonObject oneValueParamsObject = oneValueParamsArr.getAsJsonObject();
+                        String fieldValueParam = oneValueParamsObject.get("name").getAsString();
+
+                        //if (fieldValues.contains(fieldValueParam)){
+                        if (fieldVal.equals(fieldValueParam)){
+                            JsonArray usersArray = oneValueParamsObject.get("users").getAsJsonArray();
+
+                            for (JsonElement oneUser : usersArray) {
+                                ApplicationUser user = userManager.getUser(oneUser.getAsString());
+                                users.add(user);
+//                                user.getName();
+//                                user.getUsername();
+                            }
+                        }
+                    }
+
+                    TableParams tableParams = new TableParams(fieldVal, users);
+                    listTableParams.add(tableParams);
+
+                }
+
+            }
+         }
+        return listTableParams;
+
     }
+
+
+
+    public List<TableParams> getvOFMparams() {
+        return paramsForOFMprocType("vofm");
+    }
+
+    public List<TableParams> getIzOFMparams() {
+        return paramsForOFMprocType("izofm");
+    }
+
+//    // получаем значения всех групп
+//    public List<String> getAllGroups() {
+//        UserManager userManager = ComponentAccessor.getUserManager();
+//        Set<Group> groupSet = userManager.getAllGroups();
+//
+//        List<String> groupList = new ArrayList<String>();
+//
+//        for (Group groupOne: groupSet) {
+//            groupList.add(groupOne.getName());
+//        }
+//        return groupList;
+//    }
+
+//    public String doGetUsersFromGroup() {
+//
+//        //return "";
+//
+//        String retval = "[{\"label\": \"First Value\"},  {\"label\": \"Second Value\"}, {\"label\": \"Third Value\", \"value\": \"third-value\"}]";
+//
+//        log.warn(retval);
+//
+//        return retval;
+////        {"label": "Fourth Value", "value": "fourth-value", "img-src": "url/avatar.png"}
+////]
+//
+//
+//    }
+
 }

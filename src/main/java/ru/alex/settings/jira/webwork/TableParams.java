@@ -1,12 +1,14 @@
 package ru.alex.settings.jira.webwork;
 
+import com.atlassian.jira.user.ApplicationUser;
+
 import java.util.List;
 
 public class TableParams {
     private String tableName;
-    private List<String> users;
+    private List<ApplicationUser> users;
 
-    public TableParams(String tableName, List<String> users) {
+    public TableParams(String tableName, List<ApplicationUser> users) {
         this.tableName = tableName;
         this.users = users;
     }
@@ -19,11 +21,11 @@ public class TableParams {
         this.tableName = tableName;
     }
 
-    public List<String> getUsers() {
+    public List<ApplicationUser> getUsers() {
         return users;
     }
 
-    public void setUsers(List<String> users) {
+    public void setUsers(List<ApplicationUser> users) {
         this.users = users;
     }
 }
