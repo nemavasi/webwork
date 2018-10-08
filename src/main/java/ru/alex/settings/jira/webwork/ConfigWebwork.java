@@ -184,7 +184,8 @@ public class ConfigWebwork extends JiraWebActionSupport
 
                             for (JsonElement oneUser : usersArray) {
                                 //ApplicationUser user = userManager.getUser(oneUser.getAsString());
-                                ApplicationUser user = userManager.getUserByKey(oneUser.getAsString());
+                                //ApplicationUser user = userManager.getUserByKey(oneUser.getAsString());
+                                ApplicationUser user = userManager.getUserByName(oneUser.getAsString());
                                 users.add(user);
 //                                user.getName();
 //                                user.getUsername();
