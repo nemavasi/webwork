@@ -29,7 +29,7 @@ AJS.$(function() {
             ajax: {
                 delay: 250,
                 url: function(searchdata) {
-                    return "/jira/rest/api/2/user/search?username=" + searchdata;
+                    return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
                 },
 
                 // url: 'https://api.github.com/search/repositories',
@@ -159,7 +159,7 @@ function bindClickOnAddRowButton(procType, nomTable) {
             ajax: {
                 delay: 250,
                 url: function(searchdata) {
-                    return "/jira/rest/api/2/user/search?username=" + searchdata;
+                    return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
                 },
                 dataType: 'json',
                 results: function (data, page) {

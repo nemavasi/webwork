@@ -46,7 +46,7 @@
   <web-item name="Link for webwork" i18n-name-key="linkforwebwork.name" key="webwork-config-item" section="admin_plugins_menu/webwork-config-section" weight="1000">
     <description key="linkforwebwork.description">The Link for webwork Plugin</description>
     <label key="linkforwebwork.label"></label>
-    <link linkId="linkforwebwork-link">/secure/ConfigWebwork.jspa?</link>
+    <link linkId="linkforwebwork-link">/secure/ConfigWebwork.jspa</link>
   </web-item>
 
 </atlassian-plugin>
