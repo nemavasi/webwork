@@ -58,14 +58,14 @@ public class ConfigWebwork extends JiraWebActionSupport
     @Override
     public String execute() throws Exception {
         super.execute();
-        log.warn("=== execute ===");
+//        log.warn("=== execute ===");
         return SUCCESS;
     }
 
     @Override
     public String doDefault() throws Exception {
         super.doDefault();
-        log.warn("=== default ===");
+//        log.warn("=== default ===");
         return SUCCESS;
     }
 
@@ -89,14 +89,14 @@ public class ConfigWebwork extends JiraWebActionSupport
 
     public String doTest() {
         String cfg = pluginSettingService.getConfigJson();
-        log.warn("=== " + cfg + " ===");
+//        log.warn("=== " + cfg + " ===");
 
         CustomField cf_vOFM = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(10000L);
         Options opts_vOFM = ComponentAccessor.getOptionsManager().getOptions(cf_vOFM.getConfigurationSchemes().listIterator().next().getOneAndOnlyConfig());
 
         for (Option option : opts_vOFM) {
             String optValue = option.getValue();
-            log.warn("    " + optValue + " ===");
+//            log.warn("    " + optValue + " ===");
         }
 
         return SUCCESS;

@@ -15,8 +15,6 @@ public class PluginSettingsServceImpl implements PluginSettingService {
 
     private final PluginSettings pluginSettings;
     private static final String PLUGIN_STORAGE_KEY = "ru.alex.settings.";
-    //private static final String CONFIG_vOFM = "vOFM";
-    //private static final String CONFIG_izOFM = "izOFM";
     private static final String CONFIG_OFM = "ofm";
 
 
@@ -33,7 +31,6 @@ public class PluginSettingsServceImpl implements PluginSettingService {
         } else {
             return (String) pluginSettings.get(PLUGIN_STORAGE_KEY + settingKey);
         }
-        //return pluginSettings.get(PLUGIN_STORAGE_KEY + settingKey) != null?pluginSettings.get(PLUGIN_STORAGE_KEY + settingKey).toString():"";
     }
 
     private void setSettingValue(String settingKey, String settingValue) {
@@ -45,7 +42,6 @@ public class PluginSettingsServceImpl implements PluginSettingService {
         } else {
             this.pluginSettings.put(PLUGIN_STORAGE_KEY + settingKey, settingValue);
         }
-        //this.pluginSettings.put(PLUGIN_STORAGE_KEY + settingKey, settingValue != null?settingValue:"");
     }
 
     @Override
