@@ -18,36 +18,52 @@ AJS.$(function() {
         }
     });
 
-    $('.user_select').select2({
-        ajax: {
-            delay: 250,
-            url: function(searchdata) {
-                return "/jira/rest/api/2/user/search?username=" + searchdata;
-            },
+    // инициализация селектов при открытии страницы
+    var arrObjs = AJS.$("table.tableparams tr td input.user_select");
+    var arrLen = arrObjs.length;
 
-            // url: 'https://api.github.com/search/repositories',
-            dataType: 'json',
-            // data: function (term, page) {
-            //     // зачем то надо еще не понял зачем
-            //     return {q: term};
-            // },
-            results: function (data, page) {
-                var retVal = [];
-                for (var i = 0; i < data.length; i++) {
-                    var jsonObj = {};
-                    jsonObj.id = data[i].displayName;
-                    //jsonObj.id = i;
-                    jsonObj.text = data[i].name;
-                    retVal.push(jsonObj);
+    for (var i = 0; i < arrLen; i++) {
+        // AJS.$('.user_select').select2({
+        AJS.$(arrObjs[i]).select2({
+            // minimumInputLength: 0,
+            ajax: {
+                delay: 250,
+                url: function(searchdata) {
+                    return "/jira/rest/api/2/user/search?username=" + searchdata;
+                },
+
+                // url: 'https://api.github.com/search/repositories',
+                dataType: 'json',
+                // data: function (term, page) {
+                //     // зачем то надо еще не понял зачем
+                //     return {q: term};
+                // },
+                results: function (data, page) {
+                    var retVal = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var jsonObj = {};
+                        jsonObj.id = data[i].name;
+                        //jsonObj.id = i;
+                        jsonObj.text = data[i].displayName;
+                        retVal.push(jsonObj);
+                    }
+
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: retVal
+                    };
                 }
-
-                // Tranforms the top-level key of the response object from 'items' to 'results'
-                return {
-                    results: retVal
-                };
             }
+        });
+
+        var jsonText = AJS.$(arrObjs[i]).parent().find("span.userinfo");
+        if (jsonText.length == 1) {
+            var jsonObj = JSON.parse(jsonText.text());
+            AJS.$(arrObjs[i]).select2('data', { id:jsonObj.username, text: jsonObj.userdisplayname});
         }
-    });
+
+    }
+
 
     //////////////////////////////////////////////////////
     // инициализируем селекты
@@ -177,32 +193,6 @@ AJS.$(function() {
     }
 
 
-    //////////////////////////////////////////////////////
-    // получаем все группы
-    //////////////////////////////////////////////////////
-
-    // AJS.$.ajax({
-    //     url: "/jira/rest/api/2/groups/picker",
-    //
-    //     type: 'get',
-    //     dataType: 'json',
-    //     async: false,
-    //     success: function(data) {
-    //
-    //         var stroka = "";
-    //         for (var i = 0; i < data.total; i++) {
-    //             //console.log(data.groups[i].name);
-    //             stroka = stroka + "<aui-option>" + data.groups[i].name + "</aui-option>"
-    //         }
-    //
-    //         console.log(stroka);
-    //
-    //         AJS.$("aui-select[name=usergroup]").each(function (index, value) {
-    //             AJS.$(value).append(stroka);
-    //         });
-    //     }
-    // });
-
 
 
 
@@ -305,8 +295,6 @@ function bindClickOnAddRowButton(procType, nomTable) {
 
 
         var tableRow = '<tr><td>'
-            + '<input class="text medium-field" type="hidden" name="useraccount" placeholder="логин пользователя" value=""/>'
-            + '</td><td>'
             + '<input type="hidden" class="user_select" style="width: 200px;"></input>'
             + '</td><td>'
             + '<input name="btndelrow" class="button submit" type="button" value="Удалить"/>'
@@ -335,8 +323,8 @@ function bindClickOnAddRowButton(procType, nomTable) {
                     var retVal = [];
                     for (var i = 0; i < data.length; i++) {
                         var jsonObj = {};
-                        jsonObj.id = data[i].displayName;
-                        jsonObj.text = data[i].name;
+                        jsonObj.id = data[i].name;
+                        jsonObj.text = data[i].displayName;
                         retVal.push(jsonObj);
                     }
 
@@ -396,7 +384,7 @@ function submitData() {
             AJS.messages.info({
                 title: '',
                 fadeout: true,
-                body: '<p>Не сохраено</p>',
+                body: '<p>Не сохранено</p>',
             });
         },
     });
@@ -426,9 +414,10 @@ function getParamsFromTab(ztype) {
         oneParam.users = [];
 
         // AJS.$("#" + ztype + "_table_" + n_str + " tr td input[name=useraccount]").each(function(index, value) {
-        AJS.$("#" + ztype + "_table_" + n_str + " tr td .user_select").each(function(index, value) {
-            if (AJS.$(value).select2("data") != null) {
-                oneParam.users.push(AJS.$(value).select2("data").text);
+        AJS.$("#" + ztype + "_table_" + n_str + " tr td input.user_select").each(function(index, value) {
+            var objSelect = AJS.$(value).select2("data");
+            if (objSelect != null) {
+                oneParam.users.push(objSelect.id);
             }
         });
 

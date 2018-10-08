@@ -113,12 +113,8 @@
                         #foreach($user in $tableParam.users)
                             <tr>
                                 <td>
-                                    <input class="text medium-field" type="hidden" name="useraccount" placeholder="логин пользователя" value="$user.getName()"/>
-                                </td>
-
-                                <td>
                                     <input type="hidden" class="user_select" style="width: 200px;"></input>
-                                    <span style="display: none">{username:$user.getUsername(), userdisplayname:$user.getDisplayName()}</span>
+                                    <span class="userinfo" style="display: none">{"username":"$user.getUsername()", "userdisplayname":"$user.getDisplayName()"}</span>
                                 </td>
 
                                 <td>
@@ -171,8 +167,10 @@
                         #foreach($user in $tableParam.users)
                             <tr>
                                 <td>
-                                    <input class="text medium-field" type="hidden" name="useraccount" placeholder="логин пользователя" value="$user.getName()"/>
+                                    <input type="hidden" class="user_select" style="width: 200px;"></input>
+                                    <span class="userinfo" style="display: none">{"username":"$user.getUsername()", "userdisplayname":"$user.getDisplayName()"}</span>
                                 </td>
+
                                 <td>
                                     <input name="btndelrow" class="button submit" type="button" value="Удалить"/>
                                 </td>
