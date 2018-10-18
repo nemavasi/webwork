@@ -18,6 +18,50 @@ AJS.$(function() {
         }
     });
 
+    ////////////////////////////////////////////////////
+    // инициализация селекта Начальник ОФМ
+    AJS.$("input[name='ofm_boss'][type='hidden']").select2({
+        // minimumInputLength: 0,
+        ajax: {
+            delay: 250,
+            url: function(searchdata) {
+                return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
+            },
+
+            // url: 'https://api.github.com/search/repositories',
+            dataType: 'json',
+            // data: function (term, page) {
+            //     // зачем то надо еще не понял зачем
+            //     return {q: term};
+            // },
+            results: function (data, page) {
+                var retVal = [];
+                for (var i = 0; i < data.length; i++) {
+                    var jsonObj = {};
+                    jsonObj.id = data[i].name;
+                    //jsonObj.id = i;
+                    jsonObj.text = data[i].displayName;
+                    retVal.push(jsonObj);
+                }
+
+                // Tranforms the top-level key of the response object from 'items' to 'results'
+                return {
+                    results: retVal
+                };
+            }
+        }
+    });
+
+    var jsonText = AJS.$("#vofm_tab span.ofmbossinfo");
+    if (jsonText.length == 1) {
+        var jsonObj = JSON.parse(jsonText.text());
+        AJS.$("input[name='ofm_boss'][type='hidden']").select2('data', { id:jsonObj.username, text: jsonObj.userdisplayname});
+    }
+
+    ////////////////////////////////////////////////
+
+
+
     // инициализация селектов при открытии страницы
     var arrObjs = AJS.$("table.tableparams tr td input.user_select");
     var arrLen = arrObjs.length;
@@ -227,7 +271,7 @@ function submitData() {
             AJS.messages.info({
                 title: '',
                 fadeout: true,
-                body: '<p>Не сохранено</p>',
+                body: '<p>Сохранено _</p>',
             });
         },
     });
@@ -242,6 +286,15 @@ function getParamsFromTab(ztype) {
     oneTab.id = AJS.$("#" + ztype).val();
     oneTab.params = [];
 
+    // сохраним начальника ОФМ
+    if (ztype == "vofm") {
+        var objBossOFMData = AJS.$("input[name='ofm_boss'][type='hidden']").select2("data");
+        if (objBossOFMData != null) {
+            oneTab.bossofm = objBossOFMData.id;
+        } else {
+            oneTab.bossofm = "";
+        }
+    }
 
     // переменные для обхода таблиц в цикле
     var n_int = 1;

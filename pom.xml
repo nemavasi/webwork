@@ -10,7 +10,7 @@
         <url>http://www.example.com/</url>
     </organization>
     <name>webwork</name>
-    <description>This is the ru.alex.settings:webwork plugin for Atlassian JIRA.</description>
+    <description>Exec OFM. Store data for setup OFM processes. Each OFM fields have own settings</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
         <dependency>

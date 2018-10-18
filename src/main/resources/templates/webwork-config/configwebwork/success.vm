@@ -95,6 +95,15 @@
         <!-- начало блока для сохранения одной опции -->
         <!-- --------------------------------------- -->
 
+        <!-- начальник ОФМ -->
+        <div style="margin-top: 20px"">
+            <span style="font-size: 15px">Начальник ОФМ:</span>
+            &nbsp;&nbsp;
+            <input name="ofm_boss" type="hidden" class="ofm_boss" style="width: 200px;"></input>
+            <span class="ofmbossinfo" style="display: none">{"username":"$bossOFM.getUsername()", "userdisplayname":"$bossOFM.getDisplayName()"}</span>
+
+        </div>
+
 
         #set ($cnt = 0)
         #foreach($tableParam in  $vOFMparams)

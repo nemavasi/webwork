@@ -43,7 +43,9 @@ public class ConfigWebwork extends JiraWebActionSupport
     private List<TableParams> vOFMparams;
     private List<TableParams> izOFMparams;
 
-    // настройки для получения пользователей
+    private ApplicationUser bossOFM;
+
+    // менеджер пользователей
     UserManager userManager = ComponentAccessor.getUserManager();
     // тут параметры для таблицы руководителей групп
     //private List<String> allGroups;
@@ -102,7 +104,8 @@ public class ConfigWebwork extends JiraWebActionSupport
         return SUCCESS;
     }
 
-
+    // параметры настраиваемых полей
+    // идентификатор настраиваемого поля
     private String getCustomFieldIdFromJson(String typeZayav) {
         String cfg = pluginSettingService.getConfigJson();
 
@@ -117,7 +120,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         return null;
     }
 
-
+    // опции настраиваемого поля (варианты выбора)
     private List<String> getOfmFieldSettings(String fieldId) {
         List<String> local_OFMlist = new ArrayList<String>();
 
@@ -205,7 +208,6 @@ public class ConfigWebwork extends JiraWebActionSupport
     }
 
 
-
     public List<TableParams> getvOFMparams() {
         return paramsForOFMprocType("vofm");
     }
@@ -214,7 +216,31 @@ public class ConfigWebwork extends JiraWebActionSupport
         return paramsForOFMprocType("izofm");
     }
 
-//    // получаем значения всех групп
+    private ApplicationUser paramsForBossOFM() {
+        String userName = "";
+        ApplicationUser bossOFM = null;
+
+        String cfg = pluginSettingService.getConfigJson();
+
+        JsonParser parser = new JsonParser();
+        JsonArray mainArray = parser.parse(cfg).getAsJsonArray();
+        for (JsonElement fieldParam : mainArray) {
+            JsonObject typeObject = fieldParam.getAsJsonObject();
+            if ("vofm".equals(typeObject.get("ztype").getAsString())) {
+                userName = typeObject.get("bossofm").getAsString();
+                bossOFM = userManager.getUserByName(userName);
+            }
+
+
+        };
+        return bossOFM;
+    }
+
+    public ApplicationUser getBossOFM() {
+        return paramsForBossOFM();
+    }
+
+    //    // получаем значения всех групп
 //    public List<String> getAllGroups() {
 //        UserManager userManager = ComponentAccessor.getUserManager();
 //        Set<Group> groupSet = userManager.getAllGroups();
