@@ -29,6 +29,7 @@
     <!--<context>atl.popup</context>-->
   </web-resource>
 
+  <!--собственно страница которую мы добавляем-->
   <webwork1 key="webwork-config" name="Config" i18n-name-key="config.name">
     <description key="config.description">The Config Plugin</description>
     <actions>
@@ -38,11 +39,13 @@
     </actions>
   </webwork1>
 
+  <!--задаем секцию в меню админимтрирования-->
   <web-section key="webwork-config-section" name="Samples" location="admin_plugins_menu" weight="1000">
     <description>The Samples section in the Admin menu</description>
     <label key="Настройка исполнителей ОФМ"/>
   </web-section>
 
+  <!--задаем пункт в вышеназванной секции-->
   <web-item name="Link for webwork" i18n-name-key="linkforwebwork.name" key="webwork-config-item" section="admin_plugins_menu/webwork-config-section" weight="1000">
     <description key="linkforwebwork.description">The Link for webwork Plugin</description>
     <label key="Исполнители ОФМ"></label>

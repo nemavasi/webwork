@@ -27,7 +27,7 @@ import java.util.Set;
 
 import com.atlassian.crowd.embedded.api.Group;
 
-//@Named
+//@Named  //закомментировано так как это не бин Спринга - а страница
 public class ConfigWebwork extends JiraWebActionSupport
 {
     private static final Logger log = LoggerFactory.getLogger(ConfigWebwork.class);
@@ -36,14 +36,15 @@ public class ConfigWebwork extends JiraWebActionSupport
     private String configJson;
 
     // настройки полей - идентификаторы полей
-    private String idvOFM;
-    private String idizOFM;
+
+    private String idvOFM;     //замаппены на вьюху велосити эти два поля
+    private String idizOFM;    //это идентификаторы полей в ОФМ и из ОФМ
 
     // настройки полей - значения каждого поля и пользователи
     private List<TableParams> vOFMparams;
     private List<TableParams> izOFMparams;
 
-    private ApplicationUser bossOFM;
+    private ApplicationUser bossOFM;  //поле руководителя замаппено на вьюху велосити внутри JSON через геттер
 
     // менеджер пользователей
     UserManager userManager = ComponentAccessor.getUserManager();
@@ -51,7 +52,7 @@ public class ConfigWebwork extends JiraWebActionSupport
     //private List<String> allGroups;
 
 
-
+    //инжектируем из контейнера спринга наш бин настроек в каждую создаваемую страницу
     @Inject
     public ConfigWebwork(PluginSettingService pluginSettingService) {
         this.pluginSettingService = pluginSettingService;
@@ -71,6 +72,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         return SUCCESS;
     }
 
+    //получение данных с бина настроек !!!
     public String getConfigJson() {
         String cfg = pluginSettingService.getConfigJson();
 
@@ -81,10 +83,12 @@ public class ConfigWebwork extends JiraWebActionSupport
         }
     }
 
+    //сохраняем этот параметр пока в текущую страницу
     public void setConfigJson(String json) {
         this.configJson = json;
     }
 
+    //передаем параметр с локальной страницы в бин настроек
     public void doSave() {
         pluginSettingService.setConfigJson(configJson);
     }
@@ -207,11 +211,12 @@ public class ConfigWebwork extends JiraWebActionSupport
 
     }
 
-
+    //возвращает список. каждый элемент которой включает имя таблицы и в ней список пользователей Jira
     public List<TableParams> getvOFMparams() {
         return paramsForOFMprocType("vofm");
     }
 
+    //возвращает список. каждый элемент которой включает имя таблицы и в ней список пользователей Jira
     public List<TableParams> getIzOFMparams() {
         return paramsForOFMprocType("izofm");
     }
@@ -228,6 +233,7 @@ public class ConfigWebwork extends JiraWebActionSupport
             JsonObject typeObject = fieldParam.getAsJsonObject();
             if ("vofm".equals(typeObject.get("ztype").getAsString())) {
                 userName = typeObject.get("bossofm").getAsString();
+                //устанавливаем начальника
                 bossOFM = userManager.getUserByName(userName);
             }
 

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 //@ExportAsService({PluginSettingService.class})
+//этот бин спринга будет хранить строковые значения настроек по плагину
 @Named
 public class PluginSettingsServceImpl implements PluginSettingService {
 
@@ -24,7 +25,7 @@ public class PluginSettingsServceImpl implements PluginSettingService {
         this.pluginSettings = pluginSettingsFactory.createGlobalSettings();
     }
 
-
+    //достаем значение установок по  ru.alex.settings.<ключ>
     private String getSettingValue(String settingKey) {
         if (settingKey == null) {
             return "";
@@ -33,6 +34,7 @@ public class PluginSettingsServceImpl implements PluginSettingService {
         }
     }
 
+    //уставливаем значение установок по  ru.alex.settings.<ключ>
     private void setSettingValue(String settingKey, String settingValue) {
         if (settingKey == null)
             return;
@@ -44,11 +46,13 @@ public class PluginSettingsServceImpl implements PluginSettingService {
         }
     }
 
+    //короче говоря получаем данные по ключу ru.alex.settings.ofm
     @Override
     public String getConfigJson() {
         return getSettingValue(CONFIG_OFM);
     }
 
+    //короче говоря устанавливаем данные по ключу ru.alex.settings.ofm
     @Override
     public void setConfigJson(String settingValueInJsonFormat) {
         setSettingValue(CONFIG_OFM, settingValueInJsonFormat);
