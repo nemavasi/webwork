@@ -145,7 +145,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         return getCustomFieldIdFromJson("izofm");
     }
 
-    // получаем параметры из json для процессов офм
+    // получаем параметры из json для процессов офм  - на входе собственно одно из двух значений vofm или izofm
     private List<TableParams> paramsForOFMprocType(String procType) {
         // идея такая - таблицы формируем из возможных значений полей, а пользоваетелей для таблицы ищем в настройках полей которые хранятся в json
 
@@ -160,6 +160,7 @@ public class ConfigWebwork extends JiraWebActionSupport
         // идентификатор поля
         String cfId = "";
 
+        //получаем все данные которые хранит бин спринга настроек
         String cfg = pluginSettingService.getConfigJson();
 
         JsonParser parser = new JsonParser();

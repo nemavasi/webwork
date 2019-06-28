@@ -168,7 +168,7 @@
 
 
         #set ($cnt = 0)
-        #foreach($tableParam in $izOFMparams)
+        #foreach($tableParam in $izOFMparams)     ##todo вопрос только в том отсортирован ли получаемый список
             #set ($cnt = $cnt + 1)
 
             <!-- заголовок 1 -->

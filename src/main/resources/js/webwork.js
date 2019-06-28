@@ -25,6 +25,9 @@ AJS.$(function() {
         ajax: {
             delay: 250,
             url: function(searchdata) {
+                //todo что попадает в searchdata?
+                //todo https://jiratest.bank-hlynov.ru/rest/api/2/user/search?username=Ivanov&_=1561713816653
+                //todo почему возвращает пустой список?
                 return AJS.params.baseURL + "/rest/api/2/user/search?username=" + searchdata;
             },
 
